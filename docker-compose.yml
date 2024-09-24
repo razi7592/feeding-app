@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: your_db_user
+      POSTGRES_PASSWORD: your_db_password
+      POSTGRES_DB: feeding_db
+    ports:
+      - "5432:5432"
+  
+  backend:
+    build:
+      context: ./backend
+    environment:
+      DB_USER: your_db_user
+      DB_HOST: db
+      DB_NAME: feeding_db
+      DB_PASSWORD: your_db_password
+      DB_PORT: 5432
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "80:80"

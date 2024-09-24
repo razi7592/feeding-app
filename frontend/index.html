@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feeding App</title>
+</head>
+<body>
+    <h1>Feeding App</h1>
+    <form id="nameForm">
+        <input type="text" id="name" placeholder="Enter your name" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="message" style="margin-top: 20px;"></div>
+
+    <script>
+        const form = document.getElementById('nameForm');
+        const messageDiv = document.getElementById('message');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            const name = document.getElementById('name').value;
+
+            try {
+                const response = await fetch('http://localhost:5000/insert', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name }),
+                });
+
+                if (response.ok) {
+                    messageDiv.textContent = "Your name stored successfully!";
+                    messageDiv.style.color = 'green';
+                } else {
+                    messageDiv.textContent = "Error storing your name.";
+                    messageDiv.style.color = 'red';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                messageDiv.textContent = "Error storing your name.";
+                messageDiv.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>
